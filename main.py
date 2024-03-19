@@ -16,16 +16,7 @@ def to_markdown(text):
   text = text.replace('•', '  *')
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-def gemini_setup():
-    api_key = os.getenv('API_KEY')
-    genai.configure(api_key=api_key)
 
-    try:
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods:
-                print(m.name)
-    except Exception:
-        raise Exception("Please check your API key")
 
 def gemini_model():
     model = genai.GenerativeModel('gemini-pro')
