@@ -1,13 +1,25 @@
-## WIP: Chatting with your Dataframe using Gemini and Polars/DuckDB!
+# chatdf
 
+A Package to Chat with Polars/DuckDB Dataframes
 
-- This following Repo is a WIP to chat with your Dataframe!
-- There are several moving parts in this repository, which are to be integrated to complete this project.
+## Installation
 
-## Things to be done:
+```bash
+$ pip install chatdf
+```
 
- - Create a package to be used.
- - Integrate the dataframe ingestion as a prompt
- - Add polars support (Planned in 15 days)
- - Migrate from API to open source models(Maybe?)
- - Integrate a Chatbot for Business Usecase.
+## Usage
+
+- TODO
+
+## Contributing
+
+Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+
+## License
+
+`chatdf` was created by Dheeraj Oruganty, Pranav Patil, Yifan. It is licensed under the terms of the MIT license.
+
+## Credits
+
+`chatdf` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).

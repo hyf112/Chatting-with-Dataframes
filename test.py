@@ -37,4 +37,4 @@ response = client.chat.completions.create(
     top_p=1,
     )
 response_message = response.choices[0].message
-print(response_message)
+print(response_message.content)
