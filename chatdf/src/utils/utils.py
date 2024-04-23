@@ -3,6 +3,7 @@ load_dotenv()
 import os
 import google.generativeai as genai
 from openai import OpenAI
+import polars as pl
 
 
 
@@ -20,3 +21,7 @@ def gemini_setup():
 def openai_setup():
     client = OpenAI(api_key=os.environ.get('Openai'))
     return client
+
+def polars
+
+

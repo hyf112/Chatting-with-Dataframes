@@ -1,7 +1,7 @@
 from openai import OpenAI
-from utils import openai_setup
+import utils.utils as utils
 
-client = openai_setup()
+client = utils.openai_setup()
 
 messages=[
     {"role": "system", "content": "You are a sql assistant. Who is an expert in writing sql queries.\
@@ -38,3 +38,4 @@ response = client.chat.completions.create(
     )
 response_message = response.choices[0].message
 print(response_message.content)
+    

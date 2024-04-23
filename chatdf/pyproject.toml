@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chatdf"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Package to Chat with Polars/DuckDB Dataframes"
 authors = ["Dheeraj Oruganty, Pranav Patil, Yifan"]
 license = "MIT"
