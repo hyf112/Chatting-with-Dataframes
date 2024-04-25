@@ -22,6 +22,11 @@ def openai_setup():
     client = OpenAI(api_key=os.environ.get('Openai'))
     return client
 
-def polars
 
+def pl_loadLazy(data, response_message):
+    NYCTLC = pl.read_parquet(data)
+    with pl.SQLContext(register_globals=True) as NYCTLC:
+        res = NYCTLC.execute(response_message).collect()
+
+    return res
 
