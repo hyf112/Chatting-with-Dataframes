@@ -2,7 +2,7 @@ import streamlit as st
 
 # Default set
 if "OPENAI_API_KEY" not in st.session_state:
-    st.session_state["DF_PATH", "DF_SCHEMA"] = {},{}
+    st.session_state["DF_PATH", "DF_SCHEMA"] = "",""
 
 def select_dataset():
     # Dataset dictionary
@@ -57,4 +57,5 @@ def select_dataset():
     return dfpath[dataset_choice], dfSchema[dataset_choice]
 
 st.session_state["DF_PATH", "DF_SCHEMA"] = select_dataset()
+
 

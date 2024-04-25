@@ -4,7 +4,7 @@ import os
 import google.generativeai as genai
 from openai import OpenAI
 import polars as pl
-
+import streamlit as st
 
 
 def gemini_setup():
@@ -22,11 +22,26 @@ def openai_setup():
     client = OpenAI(api_key=os.environ.get('Openai'))
     return client
 
-
+#"""
 def pl_loadLazy(data, response_message):
-    NYCTLC = pl.read_parquet(data).lazy()
-    with pl.SQLContext(register_globals=True) as NYCTLC:
-        res = NYCTLC.execute(response_message+";").collect()
+    dataframe = pl.read_parquet(data).lazy()
+    with pl.SQLContext(register_globals=True) as dataframe:
+        res = dataframe.execute(response_message+";").collect()
 
     return res
+#"""
 
+"""
+def pl_loadLazy(data, response_message):
+    dataframe = pl.read_parquet(data).lazy()
+
+    # Use SQLContext correctly
+    with pl.SQLContext() as ctx:
+        # Register the lazy dataframe with a name for SQL querying
+        ctx.register("dataframe", dataframe)  # Use `register` instead of `register_table`
+        
+        # Execute SQL query using the registered name
+        res = ctx.sql(response_message).collect()
+
+    return res
+"""
