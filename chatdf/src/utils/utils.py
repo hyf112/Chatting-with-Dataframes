@@ -23,8 +23,8 @@ def openai_setup():
     return client
 
 
-def pl_loadLazy(data, response_message):
-    NYCTLC = pl.read_parquet(data).lazy()
+def pl_loadLazy(data_path, response_message):
+    NYCTLC = pl.read_parquet(data_path).lazy()
     with pl.SQLContext(register_globals=True) as NYCTLC:
         res = NYCTLC.execute(response_message+";").collect()
 

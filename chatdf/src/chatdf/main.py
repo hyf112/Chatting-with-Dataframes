@@ -84,6 +84,7 @@ def load_polars(dfpath,response_message):
     return df
 
 
+
 if __name__ == "__main__":
         df_path, df_schema = select_df()
         gpt_res = load_gpt(dfSchema=df_schema)
