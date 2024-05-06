@@ -15,3 +15,4 @@ saved = st.button("Save")
 
 if saved:
     st.session_state["OPENAI_API_KEY"] = openai_api_key
+    st.success("API Key saved successfully!")

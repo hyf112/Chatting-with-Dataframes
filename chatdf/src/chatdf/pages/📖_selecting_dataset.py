@@ -1,27 +1,14 @@
 import streamlit as st
 
 # Default set
-if "OPENAI_API_KEY" not in st.session_state:
-    st.session_state["DF_PATH", "DF_SCHEMA"] = "",""
+if "DF_PATH" not in st.session_state:
+    st.session_state["DF_PATH"] = ""
+if "DF_SCHEMA" not in st.session_state:
+    st.session_state["DF_SCHEMA"] = ""
+if "DATASET_NAME" not in st.session_state:
+    st.session_state["DATASET_NAME"] = ""
 
-def select_dataset():
-    # Dataset dictionary
-    dflist = {
-        1: 'NYCTLC',
-        2: 'Breast Cancer'#,
-        #3: 'Exit'
-    }
-
-    # Convert the dataset dictionary to a list for the dropdown
-    dataset_names = [name for _, name in sorted(dflist.items())]
-
-    # Streamlit UI to select the dataset
-    dataset_choice = st.selectbox("Select the dataset", options=dataset_names)
-
-    # Manage exit case
-    #if dataset_choice == 'Exit':
-        #st.stop()
-
+def select_dataset(dataset_choice):
     # Define paths and schemas for each dataset
     dfpath = {
         'NYCTLC': '../data/NYCTLC-2023-1.parquet',
@@ -54,8 +41,27 @@ def select_dataset():
                             Outcome, int64"""  # Placeholder schema
     }
 
-    return dfpath[dataset_choice], dfSchema[dataset_choice]
+    return dataset_choice, dfpath[dataset_choice], dfSchema[dataset_choice]
 
-st.session_state["DF_PATH", "DF_SCHEMA"] = select_dataset()
+# Dataset dictionary
+dflist = {
+    1: 'NYCTLC',
+    2: 'Breast Cancer'
+}
 
+# Convert the dataset dictionary to a list for the dropdown
+dataset_names = [name for _, name in sorted(dflist.items())]
+
+# Streamlit UI to select the dataset
+dataset_choice = st.selectbox("Select the dataset", options=dataset_names)
+
+if st.button('Save Selection'):
+    # Get the dataset name, path, and schema based on the selected dataset
+    selected_dataset, df_path, df_schema = select_dataset(dataset_choice)
+
+    # Update session state
+    st.session_state["DF_PATH"] = df_path
+    st.session_state["DF_SCHEMA"] = df_schema
+    st.session_state["DATASET_NAME"] = selected_dataset
+    st.success("Dataset selection saved!")
 

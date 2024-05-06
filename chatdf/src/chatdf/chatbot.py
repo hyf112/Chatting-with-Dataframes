@@ -1,9 +1,7 @@
 import streamlit as st
 from openai import OpenAI
-
 import polars as pl
 import json
-
 import sys
 import os
 
@@ -21,19 +19,19 @@ import utils.utils as utils
 
 
 # Function to generate SQL queries using the GPT model
-def load_gpt(df_schema): 
-    
+def load_gpt(df_name, df_schema):
+    response_message = ""
     prompt = st.text_input("Please input what you want to search for:", key='prompt')
 
     if st.button("Generate SQL Query"):
         client = OpenAI(api_key=st.session_state["OPENAI_API_KEY"])
-        messages=[
-        {"role": "system", "content": "You are a sql assistant. Who is an expert in writing sql queries for polars dataframes.\
-          The first Prompt, would be the schema and the datatypes. I want a result out in text format."},
-        {"role": "user", "content": f'{df_schema}'},
-        {"role": "user", "content": f"{prompt}. \
-                                    Only give me the SQL query in plaintext in a single line without any markdown or extra tokens"}
-      ]
+        schema_info = df_schema
+
+        messages = [
+            {"role": "system", "content": "You are a SQL assistant expert in writing SQL queries for Polars dataframes."},
+            {"role": "user", "content": f'Table schema for "{df_name}": {schema_info}'},
+            {"role": "user", "content": f"{prompt}. Only give me the SQL query in plaintext in a single line without any markdown or extra tokens"}
+        ]
 
         response = client.chat.completions.create(
             model="gpt-4-0125-preview",
@@ -41,59 +39,51 @@ def load_gpt(df_schema):
             temperature=0,
             max_tokens=4096,
             top_p=1,
-            )
+        )
         
         response_message = response.choices[0].message.content
 
-        #res = utils.pl_loadLazy(data='/Users/ivan/Georgetown/5400/Chatting-with-Dataframes/chatdf/data/NYCTLC-2023-1.parquet', response_message=response_message)
+        # Display the generated SQL query in the Streamlit UI
+        #st.text_area("Generated SQL Query:", response_message, height=100)
 
-        st.text_area("Generated SQL Query:", response_message, height=100)
     return response_message
-    #return res
+
 
 def main():
-    # Default set
-    if "OPENAI_API_KEY" not in st.session_state:
-        st.session_state["OPENAI_API_KEY"] = ""
-    
-    if "DF_PATH" not in st.session_state:
-        st.session_state["DF_PATH"] = '../data/NYCTLC-2023-1.parquet'
-    
-    if "DF_SCHEMA" not in st.session_state:
-        st.session_state["DF_SCHEMA"] = {
-        'NYCTLC': """VendorID, int64
-                    tpep_pickup_datetime, datetime64[us]
-                    tpep_dropoff_datetime, datetime64[us]
-                    passenger_count, float64
-                    trip_distance, float64
-                    RatecodeID, float64
-                    store_and_fwd_flag, object
-                    PULocationID, int64
-                    DOLocationID, int64
-                    payment_type, int64
-                    fare_amount, float64
-                    extra, float64
-                    mta_tax, float64
-                    tip_amount, float64
-                    tolls_amount, float64
-                    improvement_surcharge, float64
-                    total_amount, float64
-                    congestion_surcharge, float64
-                    airport_fee, float64"""}
-
     st.set_page_config(page_title="Chat With Your Dataframe", layout="wide")
 
     st.title("SQL Query Chatbot")
 
-    # Check if user enters api key
-    if st.session_state["OPENAI_API_KEY"] == "":
-        st.warning("Please set up your OpenAI API Key in the setting page.")
+    # Sanity check
+    if "OPENAI_API_KEY" not in st.session_state or st.session_state["OPENAI_API_KEY"] == "":
+        st.warning("Please set up your OpenAI API Key on the settings page.")
+    
+    if "DF_PATH" not in st.session_state or st.session_state["DF_PATH"] == "":
+        st.warning("Dataset path is not specified. Please configure it on the selecting page.")
 
-    df_path, df_schema = st.session_state["DF_PATH", "DF_SCHEMA"]
+    if "DF_SCHEMA" not in st.session_state or st.session_state["DF_SCHEMA"] == "":
+        st.warning("Dataset schema is not specified. Please configure it on the selecting page.")
+
+    if "DATASET_NAME" not in st.session_state or st.session_state["DATASET_NAME"] == "":
+        st.warning("Dataset name is not specified. Please configure it on the selecting page.")
+
+
+    df_path = st.session_state["DF_PATH"]
+    df_schema = st.session_state["DF_SCHEMA"]
+    df_name = st.session_state["DATASET_NAME"]
+
+    #st.write("Data Path:", df_path)
+    #st.write("Data Schema:", df_schema)
+    #st.write("Dataset Name:", df_name)
 
     # Generate SQL query using GPT model
-    query = load_gpt(df_schema)
+    query = load_gpt(df_name, df_schema)
 
-    
+    # If a query was generated and a data path is available, execute the SQL query
+    if query and df_path:
+        result_df = utils.execute_sql_query(df_path, query, df_name)
+        st.write("Query Results:")
+        st.write(result_df)
+
 if __name__ == "__main__":
     main()
