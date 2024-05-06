@@ -12,6 +12,13 @@ $ pip install chatdf
 
 - TODO
 
+```bash
+cd chatdf/src
+streamlit run chatdf/chatbot.py
+```
+
+Remember to set your API Key and select the dataset, then, test as you wish!
+
 ## Contributing
 
 Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
