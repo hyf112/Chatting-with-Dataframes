@@ -54,18 +54,25 @@ def main():
 
     st.title("SQL Query Chatbot")
 
-    # Sanity check
+    # Check if the API key has been set up
     if "OPENAI_API_KEY" not in st.session_state or st.session_state["OPENAI_API_KEY"] == "":
         st.warning("Please set up your OpenAI API Key on the settings page.")
-    
+        return  # Stop further execution until the API key is provided
+
+    # Check if the dataset path has been configured
     if "DF_PATH" not in st.session_state or st.session_state["DF_PATH"] == "":
         st.warning("Dataset path is not specified. Please configure it on the selecting page.")
+        return  # Stop further execution until the dataset path is provided
 
+    # Check if the dataset schema has been configured
     if "DF_SCHEMA" not in st.session_state or st.session_state["DF_SCHEMA"] == "":
         st.warning("Dataset schema is not specified. Please configure it on the selecting page.")
+        return  # Stop further execution until the dataset schema is provided
 
+    # Check if the dataset name has been specified
     if "DATASET_NAME" not in st.session_state or st.session_state["DATASET_NAME"] == "":
         st.warning("Dataset name is not specified. Please configure it on the selecting page.")
+        return  # Stop further execution until the dataset name is provided
 
 
     df_path = st.session_state["DF_PATH"]
