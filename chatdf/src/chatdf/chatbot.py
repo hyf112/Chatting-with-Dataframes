@@ -54,25 +54,33 @@ def main():
 
     st.title("SQL Query Chatbot")
 
-    # Check if the API key has been set up
-    if "OPENAI_API_KEY" not in st.session_state or st.session_state["OPENAI_API_KEY"] == "":
+    # Set up default values if keys do not exist
+    if "OPENAI_API_KEY" not in st.session_state:
+        st.session_state["OPENAI_API_KEY"] = ""
+    if "DF_PATH" not in st.session_state:
+        st.session_state["DF_PATH"] = ""
+    if "DF_SCHEMA" not in st.session_state:
+        st.session_state["DF_SCHEMA"] = ""
+    if "DATASET_NAME" not in st.session_state:
+        st.session_state["DATASET_NAME"] = ""
+
+    # Check for API key, data path, schema, and dataset name
+    missing_config = False
+    if not st.session_state["OPENAI_API_KEY"]:
         st.warning("Please set up your OpenAI API Key on the settings page.")
-        return  # Stop further execution until the API key is provided
-
-    # Check if the dataset path has been configured
-    if "DF_PATH" not in st.session_state or st.session_state["DF_PATH"] == "":
+        missing_config = True
+    if not st.session_state["DF_PATH"]:
         st.warning("Dataset path is not specified. Please configure it on the selecting page.")
-        return  # Stop further execution until the dataset path is provided
-
-    # Check if the dataset schema has been configured
-    if "DF_SCHEMA" not in st.session_state or st.session_state["DF_SCHEMA"] == "":
+        missing_config = True
+    if not st.session_state["DF_SCHEMA"]:
         st.warning("Dataset schema is not specified. Please configure it on the selecting page.")
-        return  # Stop further execution until the dataset schema is provided
-
-    # Check if the dataset name has been specified
-    if "DATASET_NAME" not in st.session_state or st.session_state["DATASET_NAME"] == "":
+        missing_config = True
+    if not st.session_state["DATASET_NAME"]:
         st.warning("Dataset name is not specified. Please configure it on the selecting page.")
-        return  # Stop further execution until the dataset name is provided
+        missing_config = True
+
+    if missing_config:
+        return  # Stop execution if configuration is missing
 
 
     df_path = st.session_state["DF_PATH"]
