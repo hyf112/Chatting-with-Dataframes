@@ -11,7 +11,7 @@ if "DATASET_NAME" not in st.session_state:
 def select_dataset(dataset_choice):
     # Define paths and schemas for each dataset
     dfpath = {
-        'NYCTLC': '../data/NYCTLC-2023-1.parquet',
+        'NYCTLC': 'https://github.com/hyf112/Chatting-with-Dataframes/raw/main/chatdf/data/NYCTLC-2023-1.parquet',
         'Breast Cancer': '../data/BreastCancer-2023-1.parquet'  # Placeholder path
     }
 
