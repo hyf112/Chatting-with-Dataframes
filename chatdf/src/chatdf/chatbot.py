@@ -72,18 +72,18 @@ def main():
     df_schema = st.session_state["DF_SCHEMA"]
     df_name = st.session_state["DATASET_NAME"]
 
-    #st.write("Data Path:", df_path)
-    #st.write("Data Schema:", df_schema)
-    #st.write("Dataset Name:", df_name)
+    st.write("Data Path:", df_path)
+    st.write("Data Schema:", df_schema)
+    st.write("Dataset Name:", df_name)
 
     # Generate SQL query using GPT model
-    query = load_gpt(df_name, df_schema)
+    #query = load_gpt(df_name, df_schema)
 
     # If a query was generated and a data path is available, execute the SQL query
-    if query and df_path:
-        result_df = utils.execute_sql_query(df_path, query, df_name)
-        st.write("Query Results:")
-        st.write(result_df)
+    #if query and df_path:
+        #result_df = utils.execute_sql_query(df_path, query, df_name)
+        #st.write("Query Results:")
+        #st.write(result_df)
 
 if __name__ == "__main__":
     main()
