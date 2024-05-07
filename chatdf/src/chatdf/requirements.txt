@@ -1,0 +1,8 @@
+streamlit
+openai
+polars
+duckdb
+json
+sys
+os
+dotenv
